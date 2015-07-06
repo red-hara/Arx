@@ -22,5 +22,5 @@ class MenuState extends FlxState
 		{
 			FlxG.switchState(new ActionState());
 		}
-	}	
+	}
 }

@@ -6,4 +6,5 @@ import flixel.tile.FlxTilemap;
 class Location extends FlxGroup
 {
     public var tilemap:FlxTilemap;
+    public var middle:FlxGroup;
 }
