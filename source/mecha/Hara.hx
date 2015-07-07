@@ -11,6 +11,7 @@ class Hara extends FlxSprite
     public var location:Location;
     public var actionCurrent:Int = IDLE;
     public var wantTo:Int;
+    public var goingTo:Int;
     public var path:FlxPath = new FlxPath();
 
     public var satiety:Float = 1;
@@ -32,15 +33,14 @@ class Hara extends FlxSprite
 
         FlxG.camera.follow(this, 1);
 
-        var pathPoints:Array<FlxPoint> = location.walkMap.findPath(FlxPoint.get(x + width / 2, y + height / 2),  FlxPoint.get(3 * 8 + 4,  65 * 8 + 4));
-        path.start(this, pathPoints, speed);
+        path.onComplete = onEnd;
     }
 
     override public function update():Void
     {
         super.update();
         trace(fatigue);
-        fatigue = Math.min(fatigue + FlxG.elapsed / 10, 1);
+        fatigue = Math.min(fatigue + FlxG.elapsed / 100, 1);
         if (fatigue > 0.9)
         {
             wantTo = SLEEP;
@@ -48,12 +48,36 @@ class Hara extends FlxSprite
 
         if (actionCurrent == IDLE)
         {
-            if (wantTo == SLEEP)
+            if (path.finished)
             {
+                var freePoints:Array<FlxPoint> = location.walkMap.getTileCoords(0);
+                trace(freePoints);
+                var pathPoints:Array<FlxPoint> = location.walkMap.findPath(FlxPoint.get(x + width / 2, y + height / 2),  freePoints[Std.int(freePoints.length * Math.random())]);
+                path.start(this, pathPoints, speed);
+            }
+
+            if (wantTo == SLEEP && goingTo != SLEEP)
+            {
+                goingTo = SLEEP;
                 path.cancel();
                 var pathPoints:Array<FlxPoint> = location.walkMap.findPath(FlxPoint.get(x + width / 2, y + height / 2),  location.getObjectPoint(0));
                 path.start(this, pathPoints, speed);
             }
         }
+        if (actionCurrent == SLEEP)
+        {
+            fatigue = Math.max(fatigue - FlxG.elapsed / 10, 0);
+            if (fatigue == 0)
+            {
+                wantTo = IDLE;
+            }
+        }
+    }
+
+    public function onEnd(Path:FlxPath):Void
+    {
+        actionCurrent = goingTo;
+        goingTo = IDLE;
+        wantTo = IDLE;
     }
 }

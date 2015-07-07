@@ -55,7 +55,7 @@ class Location extends FlxGroup
         {
             if (cast(object, Object).type == Type)
             {
-                return new FlxPoint(cast(object, Object).x, cast(object, Object).y);
+                return new FlxPoint(cast(object, Object).x + 4, cast(object, Object).y + 4);
             }
         }
         return new FlxPoint();
