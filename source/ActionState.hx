@@ -15,6 +15,6 @@ class ActionState extends FlxState
 
         location = new Location();
         add(location);
-        bgColor = 0xff5d7474;
+        bgColor = 0xff1c2323;
     }
 }
