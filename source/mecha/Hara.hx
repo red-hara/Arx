@@ -9,19 +9,13 @@ import Global;
 class Hara extends FlxSprite
 {
     public var location:Location;
-    public var actionCurrent:Int = IDLE;
-    public var wantTo:Int;
-    public var goingTo:Int;
+    public var actionCurrent:Int;
     public var path:FlxPath = new FlxPath();
 
     public var satiety:Float = 1;
     public var fatigue:Float = 0;
 
     public var speed:Float = 48;
-
-    public static inline var IDLE:Int = 0;
-    public static inline var WALK:Int = 1;
-    public static inline var SLEEP:Int = 2;
 
     public function new(X:Float, Y:Float, Location:Location)
     {
@@ -31,7 +25,7 @@ class Hara extends FlxSprite
         height = 8;
         offset.set(0, 16);
 
-        FlxG.camera.follow(this, 1);
+        FlxG.camera.follow(this, 0);
 
         path.onComplete = onEnd;
     }
@@ -39,45 +33,38 @@ class Hara extends FlxSprite
     override public function update():Void
     {
         super.update();
-        trace(fatigue);
         fatigue = Math.min(fatigue + FlxG.elapsed / 100, 1);
-        if (fatigue > 0.9)
-        {
-            wantTo = SLEEP;
-        }
 
-        if (actionCurrent == IDLE)
+        if ((FlxG.touches.list.length > 0 && FlxG.touches.list[0].justPressed) || FlxG.mouse.justPressed)
         {
-            if (path.finished)
+            var point:FlxPoint;
+            if (FlxG.touches.list.length > 0)
             {
-                var freePoints:Array<FlxPoint> = location.walkMap.getTileCoords(0);
-                trace(freePoints);
-                var pathPoints:Array<FlxPoint> = location.walkMap.findPath(FlxPoint.get(x + width / 2, y + height / 2),  freePoints[Std.int(freePoints.length * Math.random())]);
-                path.start(this, pathPoints, speed);
+                point = new FlxPoint(FlxG.touches.list[0].x, FlxG.touches.list[0].y);
+            }
+            else
+            {
+                point = new FlxPoint(FlxG.mouse.x, FlxG.mouse.y);
+            }
+            if (location.walkMap.getTile(Std.int(point.x / 8), Std.int(point.y / 8)) == 0)
+            {
+                path.start(this, location.walkMap.findPath(FlxPoint.get(x + width / 2, y + height / 2), FlxPoint.get(Std.int(point.x / 8) * 8 + 4, Std.int(point.y / 8) * 8 + 4)), speed);
+            }
+            else for (i in 0...8)
+            {
+                if (location.walkMap.getTile(Std.int(point.x / 8) - 1 + i % 3, Std.int(point.y / 8) - 1 + Std.int(i / 3)) == 0)
+                {
+                    path.start(this, location.walkMap.findPath(FlxPoint.get(x + width / 2, y + height / 2), FlxPoint.get((Std.int(point.x / 8) - 1 + i % 3) * 8 + 4, (Std.int(point.y / 8) - 1 + Std.int(i / 3)) * 8 + 4)), speed);
+                    break;
+                }
             }
 
-            if (wantTo == SLEEP && goingTo != SLEEP)
-            {
-                goingTo = SLEEP;
-                path.cancel();
-                var pathPoints:Array<FlxPoint> = location.walkMap.findPath(FlxPoint.get(x + width / 2, y + height / 2),  location.getObjectPoint(0));
-                path.start(this, pathPoints, speed);
-            }
-        }
-        if (actionCurrent == SLEEP)
-        {
-            fatigue = Math.max(fatigue - FlxG.elapsed / 10, 0);
-            if (fatigue == 0)
-            {
-                wantTo = IDLE;
-            }
+
         }
     }
 
     public function onEnd(Path:FlxPath):Void
     {
-        actionCurrent = goingTo;
-        goingTo = IDLE;
-        wantTo = IDLE;
+
     }
 }

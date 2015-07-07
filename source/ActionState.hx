@@ -12,9 +12,14 @@ class ActionState extends FlxState
     override public function create():Void
     {
         super.create();
-
         location = new Location();
         add(location);
         bgColor = 0xff1c2323;
+    }
+
+    override public function update():Void
+    {
+        super.update();
+        
     }
 }
