@@ -1,5 +1,7 @@
 package;
 
+import flixel.FlxCamera;
+import flixel.FlxG;
 import flixel.FlxState;
 import mecha.Location;
 
@@ -10,6 +12,7 @@ class ActionState extends FlxState
     override public function create():Void
     {
         super.create();
+
         location = new Location();
         add(location);
         bgColor = 0xff408000;
