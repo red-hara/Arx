@@ -36,6 +36,8 @@ class Hara extends FlxSprite
         animation.add("ladder hang", [14]);
 
         FlxG.camera.follow(this, 0);
+
+        Global.hara = this;
     }
 
     override public function update():Void
@@ -93,30 +95,33 @@ class Hara extends FlxSprite
         }
 
         //movement part
-        if ((FlxG.touches.list.length > 0 && FlxG.touches.list[0].justPressed) || FlxG.mouse.justPressed)
+        if (!Interface.opened)
         {
-            var point:FlxPoint;
-            if (FlxG.touches.list.length > 0)
+            if ((FlxG.touches.list.length > 0 && FlxG.touches.list[0].justPressed) || FlxG.mouse.justPressed)
             {
-                point = new FlxPoint(FlxG.touches.list[0].x, FlxG.touches.list[0].y);
-            }
-            else
-            {
-                point = new FlxPoint(FlxG.mouse.x, FlxG.mouse.y);
-            }
-            if (location.walkMap.getTile(Std.int(point.x / 8), Std.int(point.y / 8)) == 0)
-            {
-                path.start(this, location.walkMap.findPath(FlxPoint.get(x + width / 2, y + height / 2), FlxPoint.get(Std.int(point.x / 8) * 8 + 4, Std.int(point.y / 8) * 8 + 4)), speed);
-            }
-            else for (i in 0...8)
-            {
-                if (location.walkMap.getTile(Std.int(point.x / 8) - 1 + i % 3, Std.int(point.y / 8) - 1 + Std.int(i / 3)) == 0)
+                var point:FlxPoint;
+                if (FlxG.touches.list.length > 0)
                 {
-                    path.start(this, location.walkMap.findPath(FlxPoint.get(x + width / 2, y + height / 2), FlxPoint.get((Std.int(point.x / 8) - 1 + i % 3) * 8 + 4, (Std.int(point.y / 8) - 1 + Std.int(i / 3)) * 8 + 4)), speed);
-                    break;
+                    point = new FlxPoint(FlxG.touches.list[0].x, FlxG.touches.list[0].y);
+                }
+                else
+                {
+                    point = new FlxPoint(FlxG.mouse.x, FlxG.mouse.y);
+                }
+                if (location.walkMap.getTile(Std.int(point.x / 8), Std.int(point.y / 8)) == 0)
+                {
+                    path.start(this, location.walkMap.findPath(FlxPoint.get(x + width / 2, y + height / 2), FlxPoint.get(Std.int(point.x / 8) * 8 + 4, Std.int(point.y / 8) * 8 + 4)), speed);
+                }
+                else for (i in 0...8)
+                {
+                    if (location.walkMap.getTile(Std.int(point.x / 8) - 1 + (i + 1) % 3, Std.int(point.y / 8) - 1 + Std.int(i / 3)) == 0)
+                    {
+                        path.start(this, location.walkMap.findPath(FlxPoint.get(x + width / 2, y + height / 2), FlxPoint.get((Std.int(point.x / 8) - 1 + (i + 1) % 3) * 8 + 4, (Std.int(point.y / 8) - 1 + Std.int(i / 3)) * 8 + 4)), speed);
+                        break;
+                    }
                 }
             }
-        }
+            }
     }
 
     override public function draw():Void

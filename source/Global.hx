@@ -1,6 +1,8 @@
 package;
 
+import mecha.Hara;
+
 class Global
 {
-    public static var g:Float = 64;
+    public static var hara:Hara;
 }
