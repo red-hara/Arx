@@ -1,10 +1,11 @@
 package;
 
+import flash.system.System;
 import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxState;
-import mecha.Location;
 import mecha.Interface;
+import mecha.Location;
 
 class ActionState extends FlxState
 {
@@ -21,5 +22,13 @@ class ActionState extends FlxState
     override public function update():Void
     {
         location.update();
+
+        #if android
+            if (FlxG.android.justPressed.BACK)
+            {
+                Global.save();
+                System.exit(0);
+            }
+        #end
     }
 }

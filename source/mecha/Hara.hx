@@ -19,12 +19,12 @@ class Hara extends FlxSprite
     public var dirtyness:Float = 100 * Math.random();
     public var urine:Float = 100 * Math.random();
 
-    public var hungerDelay:Float = 60 * 60 * 12;
-    public var fatigueDelay:Float = 60 * 60 * 14;
-    public var lonelinessDelay:Float = 60 * 60 * 10;
-    public var thirstDelay:Float = 60 * 60 * 12;
-    public var dirtynessDelay:Float = 60 * 60 * 16;
-    public var urineDelay:Float = 60 * 60 * 12;
+    public var hungerDelay:Float = 60;//60 * 60 * 12;
+    public var fatigueDelay:Float = 60;//60 * 60 * 14;
+    public var lonelinessDelay:Float = 60;//60 * 60 * 10;
+    public var thirstDelay:Float = 60;//60 * 60 * 12;
+    public var dirtynessDelay:Float = 60;//60 * 60 * 16;
+    public var urineDelay:Float = 60;//60 * 60 * 12;
 
     public var speed:Float = 48;
     public var isOnLadder:Bool = false;
@@ -70,13 +70,10 @@ class Hara extends FlxSprite
         thirst = Math.min(100, 100 * FlxG.elapsed / thirstDelay + thirst);
         dirtyness = Math.min(100, 100 * FlxG.elapsed / dirtynessDelay + dirtyness);
         urine = Math.min(100, 100 * FlxG.elapsed / urineDelay + urine);
-        trace(hunger);
     }
 
     public function walk():Void
     {
-        fatigue = Math.min(fatigue + FlxG.elapsed / 100, 1);
-
         //animation part
         if (velocity.x != 0)
         {
