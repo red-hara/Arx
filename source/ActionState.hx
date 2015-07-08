@@ -14,7 +14,7 @@ class ActionState extends FlxState
         super.create();
         location = new Location();
         add(location);
-        bgColor = 0xff1c2323;
+        bgColor = 0xff000010;
     }
 
     override public function update():Void

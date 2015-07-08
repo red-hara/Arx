@@ -1,5 +1,6 @@
 package mecha;
 
+import flixel.addons.effects.FlxTrail;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
@@ -19,6 +20,8 @@ class Hara extends FlxSprite
     public var speed:Float = 48;
     public var isOnLadder:Bool = false;
 
+    public var trail:FlxTrail;
+
     public function new(X:Float, Y:Float, Location:Location)
     {
         super(X, Y);
@@ -37,7 +40,7 @@ class Hara extends FlxSprite
 
         FlxG.camera.follow(this, 0);
 
-        path.onComplete = onEnd;
+        trail = new FlxTrail(this, null);
     }
 
     override public function update():Void
@@ -118,13 +121,14 @@ class Hara extends FlxSprite
                     break;
                 }
             }
-
-
         }
+
+        trail.update();
     }
 
-    public function onEnd(Path:FlxPath):Void
+    override public function draw():Void
     {
-
+        trail.draw();
+        super.draw();
     }
 }
