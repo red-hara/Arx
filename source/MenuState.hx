@@ -10,7 +10,9 @@ class MenuState extends FlxState
 	{
 		super.create();
 		var text:FlxText = new FlxText(0, FlxG.height / 3, FlxG.width, "Arx\nTouch to start.");
+		text.setFormat("assets/data/Micro.ttf");
     	text.alignment = "center";
+    	text.size = 16;
 		add(text);
 		bgColor = 0xff804000;
 	}

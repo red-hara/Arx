@@ -1,6 +1,5 @@
 package mecha;
 
-import flixel.addons.effects.FlxTrail;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
@@ -20,27 +19,23 @@ class Hara extends FlxSprite
     public var speed:Float = 48;
     public var isOnLadder:Bool = false;
 
-    public var trail:FlxTrail;
-
     public function new(X:Float, Y:Float, Location:Location)
     {
         super(X, Y);
         location = Location;
 
-        loadGraphic("assets/data/nothing.png", true, 24, 24);
+        loadGraphic("assets/data/armor.png", true, 24, 24);
         width = 8;
         height = 8;
         offset.set(8, 16);
         animation.add("stay right", [0]);
         animation.add("stay left", [1]);
-        animation.add("walk right", [2, 3, 4, 5, 6, 7], 6);
-        animation.add("walk left", [8, 9, 10, 11, 12, 13], 6);
-        animation.add("ladder climb", [14, 15, 14, 16], 6);
+        animation.add("walk right", [2, 3, 4, 5, 6, 7], 8);
+        animation.add("walk left", [8, 9, 10, 11, 12, 13], 8);
+        animation.add("ladder climb", [14, 15, 14, 16], 4);
         animation.add("ladder hang", [14]);
 
         FlxG.camera.follow(this, 0);
-
-        trail = new FlxTrail(this, null);
     }
 
     override public function update():Void
@@ -122,13 +117,10 @@ class Hara extends FlxSprite
                 }
             }
         }
-
-        trail.update();
     }
 
     override public function draw():Void
     {
-        trail.draw();
         super.draw();
     }
 }

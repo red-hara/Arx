@@ -14,7 +14,7 @@ class Location extends FlxGroup
     public var objectsMap:FlxTilemap;
     public var objects:FlxGroup;
     public var light:FlxGroup;
-    public var middle:FlxGroup;
+    public var hara:Hara;
 
     public function new()
     {
@@ -24,7 +24,6 @@ class Location extends FlxGroup
         tilemap = new FlxTilemap();
         tilemap.loadMap(Assets.getText("assets/data/mapCSV_arx_main.csv"), Assets.getBitmapData("assets/data/tiles.png"), 8, 8, 0, 0, 0, 128);
 
-        middle = new FlxGroup();
         objects = new FlxGroup();
         light = new FlxGroup();
 
@@ -42,21 +41,25 @@ class Location extends FlxGroup
             sprite = new FlxSprite(point.x - 16, point.y - 16, "assets/data/light.png");
             light.add(sprite);
         }
+        points = objectsMap.getTileCoords(8, false);
+        for (point in points)
+        {
+            sprite = new Door(point.x, point.y, this);
+            objects.add(sprite);
+        }
+
+        hara = new Hara(57 * 8, 113 * 8, this);
 
         add(tilemap);
-        add(objects);
         add(objectsMap);
-        add(middle);
+        add(objects);
+        add(hara);
         add(light);
-
-
-        middle.add(new Hara(57 * 8, 113 * 8, this));
     }
 
     override public function update():Void
     {
         super.update();
-        FlxG.collide(middle, tilemap);
     }
 
     public function getObjectPoint(Type:Int):FlxPoint
