@@ -10,14 +10,28 @@ import Global;
 class Hara extends FlxSprite
 {
     public var location:Location;
-    public var actionCurrent:Int;
     public var path:FlxPath = new FlxPath();
 
-    public var satiety:Float = 1;
-    public var fatigue:Float = 0;
+    public var hunger:Float = 100 * Math.random();
+    public var fatigue:Float = 100 * Math.random();
+    public var loneliness:Float = 100 * Math.random();
+    public var thirst:Float = 100 * Math.random();
+    public var dirtyness:Float = 100 * Math.random();
+    public var urine:Float = 100 * Math.random();
+
+    public var hungerDelay:Float = 60 * 60 * 12;
+    public var fatigueDelay:Float = 60 * 60 * 14;
+    public var lonelinessDelay:Float = 60 * 60 * 10;
+    public var thirstDelay:Float = 60 * 60 * 12;
+    public var dirtynessDelay:Float = 60 * 60 * 16;
+    public var urineDelay:Float = 60 * 60 * 12;
 
     public var speed:Float = 48;
     public var isOnLadder:Bool = false;
+
+    public var action:Void->Void;
+
+    public var cameraObject:FlxObject;
 
     public function new(X:Float, Y:Float, Location:Location)
     {
@@ -35,14 +49,32 @@ class Hara extends FlxSprite
         animation.add("ladder climb", [14, 15, 14, 16], 4);
         animation.add("ladder hang", [14]);
 
-        FlxG.camera.follow(this, 0);
+        cameraObject = new FlxObject(x + 4, y + 4);
+        FlxG.camera.follow(cameraObject, 0);
+        FlxG.camera.update();
+        FlxG.camera.followLerp = 8;
 
         Global.hara = this;
+
+        action = walk;
     }
 
     override public function update():Void
     {
         super.update();
+        action();
+
+        hunger = Math.min(100, 100 * FlxG.elapsed / hungerDelay + hunger);
+        fatigue = Math.min(100, 100 * FlxG.elapsed / fatigueDelay + fatigue);
+        loneliness = Math.min(100, 100 * FlxG.elapsed / lonelinessDelay + loneliness);
+        thirst = Math.min(100, 100 * FlxG.elapsed / thirstDelay + thirst);
+        dirtyness = Math.min(100, 100 * FlxG.elapsed / dirtynessDelay + dirtyness);
+        urine = Math.min(100, 100 * FlxG.elapsed / urineDelay + urine);
+        trace(hunger);
+    }
+
+    public function walk():Void
+    {
         fatigue = Math.min(fatigue + FlxG.elapsed / 100, 1);
 
         //animation part
@@ -92,6 +124,24 @@ class Hara extends FlxSprite
                     animation.play("stay left");
                 }
             }
+        }
+
+        //camera part
+        if (velocity.x > 0)
+        {
+            cameraObject.x = x + 32;
+        }
+        else if (velocity.x < 0)
+        {
+            cameraObject.x = x - 32;
+        }
+        if (velocity.y > 0)
+        {
+            cameraObject.y = y + 16;
+        }
+        else if (velocity.y < 0)
+        {
+            cameraObject.y = y - 16;
         }
 
         //movement part

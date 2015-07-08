@@ -6,7 +6,7 @@ import flixel.util.FlxMath;
 class Door extends FlxSprite
 {
     public var location:Location;
-    public var fliper:Bool;
+    public var fliper:Bool = true;
 
     public function new(X:Float, Y:Float, Location:Location)
     {

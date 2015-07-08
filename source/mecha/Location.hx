@@ -2,12 +2,13 @@ package mecha;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.FlxSubState;
 import flixel.group.FlxGroup;
 import flixel.tile.FlxTilemap;
 import flixel.util.FlxPoint;
 import openfl.Assets;
 
-class Location extends FlxGroup
+class Location extends FlxSubState
 {
     public var tilemap:FlxTilemap;
     public var walkMap:FlxTilemap;
@@ -16,9 +17,11 @@ class Location extends FlxGroup
     public var light:FlxGroup;
     public var hara:Hara;
 
-    public function new()
+    public var interFace:Interface;
+
+    override public function create()
     {
-        super();
+        super.create();
         FlxG.worldBounds.set();
 
         tilemap = new FlxTilemap();
@@ -55,6 +58,11 @@ class Location extends FlxGroup
         add(objects);
         add(hara);
         add(light);
+
+        persistentUpdate = true;
+
+        interFace = new Interface();
+        openSubState(interFace);
     }
 
     override public function update():Void

@@ -2,18 +2,19 @@ package mecha;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.FlxSubState;
 import flixel.group.FlxGroup;
 import flixel.util.FlxPoint;
 
-class Interface extends FlxGroup
+class Interface extends FlxSubState
 {
     public static var opened:Bool = false;
 
     public var openButton:FlxSprite;
 
-    public function new()
+    override public function create():Void
     {
-        super();
+        super.create();
         openButton = new FlxSprite(0, 0, "assets/data/gui/openButton.png");
         openButton.scrollFactor.set(0, 0);
         add(openButton);
