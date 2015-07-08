@@ -12,6 +12,7 @@ class Location extends FlxGroup
     public var walkMap:FlxTilemap;
     public var objectsMap:FlxTilemap;
     public var objects:FlxGroup;
+    public var ladders:FlxGroup;
     public var middle:FlxGroup;
 
     public function new()
@@ -24,15 +25,13 @@ class Location extends FlxGroup
 
         middle = new FlxGroup();
         objects = new FlxGroup();
+        ladders = new FlxGroup();
 
         walkMap = new FlxTilemap();
         walkMap.loadMap(Assets.getText("assets/data/mapCSV_arx_walk.csv"), Assets.getBitmapData("assets/data/tiles.png"), 8, 8);
 
         objectsMap = new FlxTilemap();
         objectsMap.loadMap(Assets.getText("assets/data/mapCSV_arx_objects.csv"), Assets.getBitmapData("assets/data/objects.png"), 8, 8);
-        var object:Object = new Object(60 * 8, 113 * 8);
-        object.type = 0;
-        objects.add(object);
 
         add(tilemap);
         add(objects);
