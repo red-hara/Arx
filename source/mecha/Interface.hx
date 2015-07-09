@@ -9,10 +9,13 @@ import flixel.tweens.FlxTween;
 
 class Interface extends FlxSubState
 {
+    public static var used:Bool = false;
     public static var opened:Bool = false;
 
     public var tab:FlxGroup;
 
+    public var useButton:FlxSprite;
+    public var fliper:Bool = true;
     public var openButton:FlxSprite;
     public var bg:FlxSprite;
 
@@ -28,6 +31,10 @@ class Interface extends FlxSubState
         super.create();
         openButton = new FlxSprite(0, 0, "assets/data/gui/openButton.png");
         openButton.scrollFactor.set(0, 0);
+
+        useButton = new FlxSprite(144+16, -16, "assets/data/gui/useButton.png");
+        useButton.scrollFactor.set(0, 0);
+        add(useButton);
 
         tab = new FlxGroup();
 
@@ -70,6 +77,8 @@ class Interface extends FlxSubState
         openButton.x = bg.x + 136;
         openButton.y = bg.y + 66;
 
+        used = opened;
+
         if ((FlxG.touches.list.length > 0 && FlxG.touches.list[0].justPressed) || FlxG.mouse.justPressed)
         {
             var point:FlxPoint;
@@ -84,16 +93,43 @@ class Interface extends FlxSubState
 
             if (openButton.pixelsOverlapPoint(point))
             {
-                opened = !opened;
-                if (opened)
+                used = true;
+                if (!opened)
                 {
+                    opened = true;
                     openBg();
                 }
                 else
                 {
+                    opened = false;
                     closeBg();
                 }
             }
+
+            if (!used)
+            {
+                if (useButton.pixelsOverlapPoint(point))
+                {
+                    used = true;
+                    Global.hara.use();
+                }
+            }
+        }
+
+
+
+        if (Global.hara.canUse)
+        {
+            if (fliper)
+            {
+                fliper = false;
+                FlxTween.linearMotion(useButton, useButton.x, useButton.y, 144, 0, .25, true, {complete: fliperUse, type: FlxTween.ONESHOT});
+            }
+        }
+        else if (fliper)
+        {
+            fliper = false;
+            FlxTween.linearMotion(useButton, useButton.x, useButton.y, 144+16, -16, .25, true, {complete: fliperUse, type: FlxTween.ONESHOT});
         }
 
         hungerBar.display(Global.hara.hunger);
@@ -102,23 +138,28 @@ class Interface extends FlxSubState
         thirstBar.display(Global.hara.thirst);
         dirtynessBar.display(Global.hara.dirtyness);
         urineBar.display(Global.hara.urine);
+    }
 
+    public function fliperUse(Tween:FlxTween):Void
+    {
+        fliper = true;
     }
 
     public function openBg():Void
     {
         bg.visible = true;
-        FlxTween.quadMotion(bg, bg.x, bg.y, 0, 0, 0, 0, .5, true, {type: FlxTween.ONESHOT});
+        FlxTween.quadMotion(bg, bg.x, bg.y, 0, 0, 0, 0, .25, true, {type: FlxTween.ONESHOT});
     }
 
     public function closeBg():Void
     {
-        FlxTween.quadMotion(bg, bg.x, bg.y, 0, 0, -136, -66, .5, true, {complete: onClose, type: FlxTween.ONESHOT});
+        FlxTween.quadMotion(bg, bg.x, bg.y, 0, 0, -136, -66, .25, true, {complete: onClose, type: FlxTween.ONESHOT});
     }
 
     public function onClose(Tween:FlxTween):Void
     {
         bg.visible = false;
+        used = false;
     }
 }
 
@@ -146,7 +187,7 @@ class Bar extends FlxSprite
 
     public function display(Percent:Float):Void
     {
-        makeGraphic(6, Std.int(54 - 54 / 100 * Percent), 0xff2e1717);
-        offset.y = -Math.ceil(54 / 100 * Percent) - 0.5;
+        makeGraphic(6, 54 - Std.int(54 / 100 * Percent), 0xff2e1717);
+        offset.y = -Math.floor(54 / 100 * Percent) - 0.5;
     }
 }

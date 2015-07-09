@@ -80,6 +80,5 @@ class CustomGame extends FlxGame
     override private function onFocusLost(_)
     {
         Global.save();
-        System.exit(0);
     }
 }

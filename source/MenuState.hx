@@ -16,6 +16,9 @@ class MenuState extends FlxState
         text.size = 16;
         add(text);
         bgColor = 0xff804000;
+        #if android
+            FlxG.mouse.visible = false;
+        #end
     }
     
     override public function update():Void
@@ -25,12 +28,5 @@ class MenuState extends FlxState
         {
             FlxG.switchState(new ActionState());
         }
-
-        #if android
-            if (FlxG.android.justPressed.BACK)
-            {
-                System.exit(0);
-            }
-        #end
     }
 }

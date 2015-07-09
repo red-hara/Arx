@@ -15,6 +15,7 @@ class Location extends FlxSubState
     public var objectsMap:FlxTilemap;
     public var objects:FlxGroup;
     public var light:FlxGroup;
+    public var doors:FlxGroup;
     public var hara:Hara;
 
     public var interFace:Interface;
@@ -29,6 +30,7 @@ class Location extends FlxSubState
 
         objects = new FlxGroup();
         light = new FlxGroup();
+        doors = new FlxGroup();
 
         walkMap = new FlxTilemap();
         walkMap.loadMap(Assets.getText("assets/data/mapCSV_arx_walk.csv"), Assets.getBitmapData("assets/data/tiles.png"), 8, 8);
@@ -48,21 +50,40 @@ class Location extends FlxSubState
         for (point in points)
         {
             sprite = new Door(point.x, point.y, this);
+            doors.add(sprite);
+        }
+        points = objectsMap.getTileCoords(10, false);
+        for (point in points)
+        {
+            sprite = new Bed(point.x, point.y);
             objects.add(sprite);
+            objectsMap.setTile(Std.int(point.x / 8), Std.int(point.y / 8), 0);
         }
 
-        hara = new Hara(57 * 8, 113 * 8, this);
+        points = objectsMap.getTileCoords(11, false);
+        for (point in points)
+        {
+            sprite = new Cliff(point.x, point.y);
+            objects.add(sprite);
+            objectsMap.setTile(Std.int(point.x / 8), Std.int(point.y / 8), 0);
+        }
+
+
+        hara = new Hara(59 * 8, 65 * 8, this);
 
         add(tilemap);
         add(objectsMap);
         add(objects);
         add(hara);
+        add(doors);
         add(light);
 
         persistentUpdate = true;
 
         interFace = new Interface();
         openSubState(interFace);
+
+        Global.load();
     }
 
     override private function tryUpdate():Void
@@ -81,17 +102,5 @@ class Location extends FlxSubState
         {
             update();
         }
-    }
-
-    public function getObjectPoint(Type:Int):FlxPoint
-    {
-        for (object in objects)
-        {
-            if (cast(object, Object).type == Type)
-            {
-                return new FlxPoint(cast(object, Object).x + 4, cast(object, Object).y + 4);
-            }
-        }
-        return new FlxPoint();
     }
 }

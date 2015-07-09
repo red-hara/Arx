@@ -33,6 +33,13 @@ class Hara extends FlxSprite
 
     public var cameraObject:FlxObject;
 
+    public var canUse:Bool = false;
+
+    public var activity:Int = WALK;
+    public static inline var WALK:Int = 0;
+    public static inline var SLEEP:Int = 1;
+    public static inline var SIT:Int = 2;
+
     public function new(X:Float, Y:Float, Location:Location)
     {
         super(X, Y);
@@ -48,15 +55,22 @@ class Hara extends FlxSprite
         animation.add("walk left", [8, 9, 10, 11, 12, 13], 8);
         animation.add("ladder climb", [14, 15, 14, 16], 4);
         animation.add("ladder hang", [14]);
+        animation.add("sleep", [17]);
+        animation.add("sit", [18]);
 
+        Global.hara = this;
+
+        action = walk;
+    }
+
+    public function create():Void
+    {
         cameraObject = new FlxObject(x + 4, y + 4);
         FlxG.camera.follow(cameraObject, 0);
         FlxG.camera.update();
         FlxG.camera.followLerp = 8;
 
-        Global.hara = this;
-
-        action = walk;
+        updateAction();
     }
 
     override public function update():Void
@@ -64,12 +78,80 @@ class Hara extends FlxSprite
         super.update();
         action();
 
+        canUse = overlaps(location.objects);
+
         hunger = Math.min(100, 100 * FlxG.elapsed / hungerDelay + hunger);
         fatigue = Math.min(100, 100 * FlxG.elapsed / fatigueDelay + fatigue);
         loneliness = Math.min(100, 100 * FlxG.elapsed / lonelinessDelay + loneliness);
         thirst = Math.min(100, 100 * FlxG.elapsed / thirstDelay + thirst);
         dirtyness = Math.min(100, 100 * FlxG.elapsed / dirtynessDelay + dirtyness);
         urine = Math.min(100, 100 * FlxG.elapsed / urineDelay + urine);
+    }
+
+    public function use():Void
+    {
+        for (member in location.objects.members)
+        {
+            if (overlaps(member))
+            {
+                useObject(cast(member, FlxObject));
+            }
+        }
+    }
+
+    public function useObject(Object:FlxObject)
+    {
+        if (Std.is(Object, Bed))
+        {
+            if (activity == SLEEP)
+            {
+                activity = WALK;
+            }
+            else
+            {
+                activity = SLEEP;
+            }
+        }
+
+        if (Std.is(Object, Cliff))
+        {
+            if (activity == SIT)
+            {
+                activity = WALK;
+                offset.set(8, 16);
+            }
+            else
+            {
+                activity = SIT;
+            }
+        }
+
+        updateAction();
+    }
+
+    public function sit():Void
+    {
+        animation.play("sit");
+        offset.set(8, 10);
+    }
+
+    public function sleep():Void
+    {
+        animation.play("sleep");
+        fatigue = Math.max(0, -100 * FlxG.elapsed / fatigueDelay * 8 + fatigue);
+    }
+
+    public function updateAction():Void
+    {
+        switch (activity)
+        {
+            case WALK:
+                action = walk;
+            case SLEEP:
+                action = sleep;
+            case SIT:
+                action = sit;
+        }
     }
 
     public function walk():Void
@@ -142,7 +224,7 @@ class Hara extends FlxSprite
         }
 
         //movement part
-        if (!Interface.opened)
+        if (!Interface.used)
         {
             if ((FlxG.touches.list.length > 0 && FlxG.touches.list[0].justPressed) || FlxG.mouse.justPressed)
             {
