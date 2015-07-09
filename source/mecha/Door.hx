@@ -1,5 +1,6 @@
 package mecha;
 
+import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.util.FlxMath;
 
@@ -25,6 +26,7 @@ class Door extends FlxSprite
             if (fliper)
             {
                 animation.play("open");
+                FlxG.sound.play("assets/data/sounds/door.wav");
                 fliper = false;
             }
 
@@ -34,6 +36,7 @@ class Door extends FlxSprite
             if (!fliper)
             {
                 animation.play("close");
+                FlxG.sound.play("assets/data/sounds/door.wav");
                 fliper = true;
             }
         }

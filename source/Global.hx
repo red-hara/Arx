@@ -41,7 +41,6 @@ class Global
             hara.y = saver.data.y;
             hara.facing = saver.data.facing;
             hara.isOnLadder = saver.data.isOnLadder;
-            trace(deltaTime);
 
             if (hara.activity == 1)
             {

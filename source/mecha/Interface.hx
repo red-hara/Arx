@@ -208,11 +208,11 @@ class SaveIcon extends FlxSprite
 
     public function pop():Void
     {
-        FlxTween.color(this, .5, 0xffffffff, 0xffffffff, 0, 1, {complete: fade, type: FlxTween.ONESHOT});
+        FlxTween.color(this, 1, 0xffffffff, 0xffffffff, 0, 1, {complete: fade, type: FlxTween.ONESHOT});
     }
 
     public function fade(Tween:FlxTween):Void
     {
-        FlxTween.color(this, .5, 0xffffffff, 0xffffffff, 1, 0, {type: FlxTween.ONESHOT});
+        FlxTween.color(this, 1, 0xffffffff, 0xffffffff, 1, 0, {type: FlxTween.ONESHOT});
     }
 }

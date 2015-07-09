@@ -4,6 +4,7 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxSubState;
 import flixel.group.FlxGroup;
+import flixel.system.FlxSound;
 import flixel.tile.FlxTilemap;
 import flixel.util.FlxPoint;
 import openfl.Assets;
@@ -78,8 +79,9 @@ class Location extends FlxSubState
         }
 
 
-        hara = new Hara(59 * 8, 65 * 8, this);
+        hara = new Hara(100 * 8, 65 * 8, this);
 
+        add(new Rain());
         add(tilemap);
         add(objectsMap);
         add(objects);
@@ -94,6 +96,9 @@ class Location extends FlxSubState
 
         Global.load();
         Global.save();
+
+        FlxG.sound.playMusic("assets/data/sounds/rain.wav");
+        add(new Noise(85 * 8, 112 * 8));
     }
 
     override private function tryUpdate():Void
@@ -112,5 +117,69 @@ class Location extends FlxSubState
         {
             update();
         }
+    }
+}
+
+class Rain extends FlxGroup
+{
+    public function new()
+    {
+        super();
+        var x = 0;
+        var y = 0;
+        while (x < FlxG.width)
+        {
+            y = 0;
+            while (y < FlxG.height + 16)
+            {
+                add(new RainDrop(x, y));
+                y += 16;
+            }
+            x += 16;
+        }
+    }
+
+    override public function update():Void
+    {
+        super.update();
+    }
+}
+
+class RainDrop extends FlxSprite
+{
+    public function new(X:Float, Y:Float)
+    {
+        super(X, Y);
+        loadGraphic("assets/data/rain.png", true, 16, 16, false);
+        animation.randomFrame();
+        scrollFactor.set(0, 0);
+        velocity.y = 128;
+    }
+
+    override public function update():Void
+    {
+        super.update();
+        if (y > FlxG.height)
+        {
+            y -= FlxG.height + 16;
+            animation.randomFrame();
+        }
+    }
+}
+
+class Noise extends FlxSound
+{
+    override public function new(X:Float, Y:Float)
+    {
+        super();
+        loadEmbedded("assets/data/sounds/noise.wav", true);
+        play();
+        setPosition(X, Y);
+    }
+
+    override public function update():Void
+    {
+        super.update();
+        proximity(x, y, Global.hara, 64);
     }
 }

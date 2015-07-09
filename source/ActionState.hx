@@ -17,7 +17,7 @@ class ActionState extends FlxState
         super.create();
         location = new Location();
         openSubState(location);
-        bgColor = 0xff000010;
+        bgColor = 0xff000000;
         saveTimer = new FlxTimer(30, saveMethod, 0);
     }
 
