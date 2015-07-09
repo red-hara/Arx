@@ -5,7 +5,6 @@ import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxState;
 import flixel.util.FlxTimer;
-import mecha.Interface;
 import mecha.Location;
 
 class ActionState extends FlxState
@@ -19,7 +18,7 @@ class ActionState extends FlxState
         location = new Location();
         openSubState(location);
         bgColor = 0xff000010;
-        saveTimer = new FlxTimer(60, saveMethod, 0);
+        saveTimer = new FlxTimer(30, saveMethod, 0);
     }
 
     override public function update():Void
@@ -36,7 +35,7 @@ class ActionState extends FlxState
 
     public function saveMethod(Timer:FlxTimer):Void
     {
-        trace("game saved");
+        location.interFace.saveIcon.pop();
         Global.save();
     }
 }

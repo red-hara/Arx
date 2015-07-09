@@ -52,6 +52,15 @@ class Location extends FlxSubState
             sprite = new Door(point.x, point.y, this);
             doors.add(sprite);
         }
+
+        points = objectsMap.getTileCoords(9, false);
+        for (point in points)
+        {
+            sprite = new Sink(point.x, point.y);
+            objects.add(sprite);
+            objectsMap.setTile(Std.int(point.x / 8), Std.int(point.y / 8), 0);
+        }
+
         points = objectsMap.getTileCoords(10, false);
         for (point in points)
         {
@@ -84,6 +93,7 @@ class Location extends FlxSubState
         openSubState(interFace);
 
         Global.load();
+        Global.save();
     }
 
     override private function tryUpdate():Void

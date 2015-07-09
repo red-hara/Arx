@@ -14,6 +14,8 @@ class Interface extends FlxSubState
 
     public var tab:FlxGroup;
 
+    public var saveIcon:SaveIcon;
+
     public var useButton:FlxSprite;
     public var fliper:Bool = true;
     public var openButton:FlxSprite;
@@ -69,6 +71,9 @@ class Interface extends FlxSubState
         tab.add(urineBar);
 
         add(tab);
+
+        saveIcon = new SaveIcon();
+        add(saveIcon);
     }
 
     override public function update():Void
@@ -189,5 +194,25 @@ class Bar extends FlxSprite
     {
         makeGraphic(6, 54 - Std.int(54 / 100 * Percent), 0xff2e1717);
         offset.y = -Math.floor(54 / 100 * Percent) - 0.5;
+    }
+}
+
+class SaveIcon extends FlxSprite
+{
+    public function new()
+    {
+        super(FlxG.width / 2 - 8, 0, "assets/data/gui/save.png");
+        scrollFactor.set(0, 0);
+        alpha = 0;
+    }
+
+    public function pop():Void
+    {
+        FlxTween.color(this, .5, 0xffffffff, 0xffffffff, 0, 1, {complete: fade, type: FlxTween.ONESHOT});
+    }
+
+    public function fade(Tween:FlxTween):Void
+    {
+        FlxTween.color(this, .5, 0xffffffff, 0xffffffff, 1, 0, {type: FlxTween.ONESHOT});
     }
 }

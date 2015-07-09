@@ -19,12 +19,12 @@ class Hara extends FlxSprite
     public var dirtyness:Float = 100 * Math.random();
     public var urine:Float = 100 * Math.random();
 
-    public var hungerDelay:Float = 60;//60 * 60 * 12;
-    public var fatigueDelay:Float = 60;//60 * 60 * 14;
-    public var lonelinessDelay:Float = 60;//60 * 60 * 10;
-    public var thirstDelay:Float = 60;//60 * 60 * 12;
-    public var dirtynessDelay:Float = 60;//60 * 60 * 16;
-    public var urineDelay:Float = 60;//60 * 60 * 12;
+    public var hungerDelay:Float = 60 * 60 * 12;
+    public var fatigueDelay:Float = 60 * 60 * 14;
+    public var lonelinessDelay:Float = 60 * 60 * 10;
+    public var thirstDelay:Float = 60 * 60 * 12;
+    public var dirtynessDelay:Float = 60 * 60 * 16;
+    public var urineDelay:Float = 60 * 60 * 12;
 
     public var speed:Float = 48;
     public var isOnLadder:Bool = false;
@@ -39,6 +39,7 @@ class Hara extends FlxSprite
     public static inline var WALK:Int = 0;
     public static inline var SLEEP:Int = 1;
     public static inline var SIT:Int = 2;
+    public static inline var DRINK:Int = 3;
 
     public function new(X:Float, Y:Float, Location:Location)
     {
@@ -57,6 +58,7 @@ class Hara extends FlxSprite
         animation.add("ladder hang", [14]);
         animation.add("sleep", [17]);
         animation.add("sit", [18]);
+        animation.add("use", [19, 20, 21], 2);
 
         Global.hara = this;
 
@@ -112,7 +114,6 @@ class Hara extends FlxSprite
                 activity = SLEEP;
             }
         }
-
         if (Std.is(Object, Cliff))
         {
             if (activity == SIT)
@@ -125,8 +126,23 @@ class Hara extends FlxSprite
                 activity = SIT;
             }
         }
+        if (Std.is(Object, Sink))
+        {
+            activity = DRINK;
+        }
 
         updateAction();
+    }
+
+    public function drink():Void
+    {
+        animation.play("use");
+        thirst = Math.max(0, -100 * FlxG.elapsed / thirstDelay * 10000 + thirst);
+        if (thirst == 0)
+        {
+            activity = WALK;
+            updateAction();
+        }
     }
 
     public function sit():Void
@@ -151,6 +167,8 @@ class Hara extends FlxSprite
                 action = sleep;
             case SIT:
                 action = sit;
+            case DRINK:
+                action = drink;
         }
     }
 
