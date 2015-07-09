@@ -168,11 +168,6 @@ class Hara extends FlxSprite
                     }
                 }
             }
-            }
-    }
-
-    override public function draw():Void
-    {
-        super.draw();
+        }
     }
 }

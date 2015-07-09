@@ -65,9 +65,22 @@ class Location extends FlxSubState
         openSubState(interFace);
     }
 
-    override public function update():Void
-    {
-        super.update();
+    override private function tryUpdate():Void
+    {   
+        if (_requestSubStateReset)
+        {
+            _requestSubStateReset = false;
+            resetSubState();
+        }
+        else if (subState != null)
+        {
+            subState.tryUpdate();
+        }
+
+        if (persistentUpdate || (subState == null))
+        {
+            update();
+        }
     }
 
     public function getObjectPoint(Type:Int):FlxPoint

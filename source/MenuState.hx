@@ -21,7 +21,7 @@ class MenuState extends FlxState
     override public function update():Void
     {
         super.update();
-        if (FlxG.keys.pressed.SPACE || (FlxG.touches.list.length > 0 && FlxG.touches.list[0].justPressed))
+        if (FlxG.mouse.justPressed || (FlxG.touches.list.length > 0 && FlxG.touches.list[0].justPressed))
         {
             FlxG.switchState(new ActionState());
         }
