@@ -58,7 +58,7 @@ class Hero extends FlxSprite
         animation.add("ladder hang", [14]);
         animation.add("sleep", [17]);
         animation.add("sit", [18]);
-        animation.add("use", [19, 20, 21], 2);
+        animation.add("use", [19, 20, 19, 21], 2);
 
         Global.hero = this;
 

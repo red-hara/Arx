@@ -137,12 +137,15 @@ class Interface extends FlxSubState
             FlxTween.linearMotion(useButton, useButton.x, useButton.y, 144+16, -16, .25, true, {complete: fliperUse, type: FlxTween.ONESHOT});
         }
 
-        hungerBar.display(Global.hero.hunger);
-        fatigueBar.display(Global.hero.fatigue);
-        lonelinessBar.display(Global.hero.loneliness);
-        thirstBar.display(Global.hero.thirst);
-        dirtynessBar.display(Global.hero.dirtyness);
-        urineBar.display(Global.hero.urine);
+        if (bg.visible)
+        {
+            hungerBar.display(Global.hero.hunger);
+            fatigueBar.display(Global.hero.fatigue);
+            lonelinessBar.display(Global.hero.loneliness);
+            thirstBar.display(Global.hero.thirst);
+            dirtynessBar.display(Global.hero.dirtyness);
+            urineBar.display(Global.hero.urine);
+        }
     }
 
     public function fliperUse(Tween:FlxTween):Void
