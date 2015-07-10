@@ -4,8 +4,9 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxSubState;
 import flixel.group.FlxGroup;
-import flixel.util.FlxPoint;
+import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
+import flixel.util.FlxPoint;
 
 class Interface extends FlxSubState
 {
@@ -16,6 +17,7 @@ class Interface extends FlxSubState
 
     public var saveIcon:SaveIcon;
 
+    public var monitor:Monitor;
     public var useButton:FlxSprite;
     public var fliper:Bool = true;
     public var openButton:FlxSprite;
@@ -47,29 +49,25 @@ class Interface extends FlxSubState
         tab.add(bg);
 
         hungerBar = new Bar(17, 25, bg);
-        hungerBar.display(Global.hero.hunger);
         tab.add(hungerBar);
 
         fatigueBar = new Bar(33, 25, bg);
-        fatigueBar.display(Global.hero.fatigue);
         tab.add(fatigueBar);
 
         lonelinessBar = new Bar(49, 25, bg);
-        lonelinessBar.display(Global.hero.loneliness);
         tab.add(lonelinessBar);
 
         thirstBar = new Bar(65, 25, bg);
-        thirstBar.display(Global.hero.thirst);
         tab.add(thirstBar);
 
         dirtynessBar = new Bar(81, 25, bg);
-        dirtynessBar.display(Global.hero.dirtyness);
         tab.add(dirtynessBar);
 
         urineBar = new Bar(97, 25, bg);
-        urineBar.display(Global.hero.urine);
         tab.add(urineBar);
 
+        monitor = new Monitor();
+        add(monitor);
         add(tab);
 
         saveIcon = new SaveIcon();
@@ -120,7 +118,6 @@ class Interface extends FlxSubState
                 }
             }
         }
-
 
 
         if (Global.hero.canUse)
@@ -217,5 +214,37 @@ class SaveIcon extends FlxSprite
     public function fade(Tween:FlxTween):Void
     {
         FlxTween.color(this, 1, 0xffffffff, 0xffffffff, 1, 0, {type: FlxTween.ONESHOT});
+    }
+}
+
+class Monitor extends FlxGroup
+{
+    public var bg:FlxSprite;
+    public var button:FlxSprite;
+    public var text:FlxText;
+    public var opened:Bool = false;
+
+    public function new()
+    {
+        super();
+        bg = new FlxSprite(0, 90, "assets/data/gui/monitor.png");
+        bg.scrollFactor.set(0, 0);
+        add(bg);
+    }
+
+    public function open():Void
+    {
+        opened = true;
+        FlxTween.linearMotion(bg, bg.x, bg.y, 0, 0, .25, true, {type: FlxTween.ONESHOT});
+    }
+
+    public function close():Void
+    {
+        FlxTween.linearMotion(bg, bg.x, bg.y, 0, 90, .25, true, {complete: onClose, type: FlxTween.ONESHOT});
+    }
+
+    public function onClose(Tween:FlxTween):Void
+    {
+        opened = false;
     }
 }

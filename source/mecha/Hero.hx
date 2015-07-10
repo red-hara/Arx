@@ -40,6 +40,7 @@ class Hero extends FlxSprite
     public static inline var SLEEP:Int = 1;
     public static inline var SIT:Int = 2;
     public static inline var DRINK:Int = 3;
+    public static inline var COMPUTER:Int = 4;
 
     public function new(X:Float, Y:Float, Location:Location)
     {
@@ -130,8 +131,25 @@ class Hero extends FlxSprite
         {
             activity = DRINK;
         }
+        if (Std.is(Object, Computer))
+        {
+            if (activity == COMPUTER)
+            {
+                activity = WALK;
+                location.interFace.monitor.close();
+            }
+            else
+            {
+                activity = COMPUTER;
+            }
+        }
 
         updateAction();
+    }
+
+    public function computer():Void
+    {
+        animation.play("use");
     }
 
     public function drink():Void
@@ -169,6 +187,9 @@ class Hero extends FlxSprite
                 action = sit;
             case DRINK:
                 action = drink;
+            case COMPUTER:
+                action = computer;
+                location.interFace.monitor.open();
         }
     }
 

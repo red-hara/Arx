@@ -26,6 +26,10 @@ class Location extends FlxSubState
         super.create();
         FlxG.worldBounds.set();
 
+        interFace = new Interface();
+        interFace.create();
+        subState = interFace;
+
         tilemap = new FlxTilemap();
         tilemap.loadMap(Assets.getText("assets/data/mapCSV_arx_main.csv"), Assets.getBitmapData("assets/data/tiles.png"), 8, 8, 0, 0, 0, 128);
 
@@ -78,6 +82,8 @@ class Location extends FlxSubState
             objectsMap.setTile(Std.int(point.x / 8), Std.int(point.y / 8), 0);
         }
 
+        objects.add(new Computer(88 * 8, 89 * 8));
+
 
         hero = new Hero(100 * 8, 65 * 8, this);
 
@@ -90,9 +96,6 @@ class Location extends FlxSubState
         add(light);
 
         persistentUpdate = true;
-
-        interFace = new Interface();
-        openSubState(interFace);
 
         Global.load();
         Global.save();
