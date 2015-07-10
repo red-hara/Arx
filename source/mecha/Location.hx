@@ -85,7 +85,7 @@ class Location extends FlxSubState
         objects.add(new Computer(88 * 8, 89 * 8));
 
 
-        hero = new Hero(100 * 8, 65 * 8, this);
+        hero = new Hero(60 * 8, 89 * 8, this);
 
         add(new Rain());
         add(tilemap);

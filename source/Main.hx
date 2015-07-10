@@ -6,6 +6,7 @@ import flash.display.StageScaleMode;
 import flash.events.Event;
 import flash.Lib;
 import flash.system.System;
+import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.FlxState;
 import flixel.system.ui.FlxFocusLostScreen;
@@ -79,6 +80,9 @@ class CustomGame extends FlxGame
 
     override private function onFocusLost(_)
     {
-        Global.save();
+        if (Std.is(FlxG.state, ActionState))
+        {
+            Global.save();
+        }
     }
 }

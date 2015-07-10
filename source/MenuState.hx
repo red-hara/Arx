@@ -19,6 +19,8 @@ class MenuState extends FlxState
         #if android
             FlxG.mouse.visible = false;
         #end
+
+        Global.loadDialog(-1);
     }
     
     override public function update():Void

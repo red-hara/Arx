@@ -2,10 +2,19 @@ package;
 
 import mecha.Hero;
 import flixel.util.FlxSave;
+import flixel.util.FlxTimer;
+import openfl.Assets;
 
 class Global
 {
     public static var hero:Hero;
+
+    public static var log:String = "";
+    public static var dialogNumber:Int = -1;
+    public static var dialogIndex:Int = 0;
+    public static var dialogAmount = 0;
+    public static var dialog:Array<String>;
+    public static var typeTimer:FlxTimer;
 
     public static function save():Void
     {
@@ -24,6 +33,9 @@ class Global
         saver.data.y = hero.y;
         saver.data.facing = hero.facing;
         saver.data.isOnLadder = hero.isOnLadder;
+        saver.data.log = log;
+        saver.data.dialogNumber = dialogNumber;
+        saver.data.dialogIndex = dialogIndex;
 
         saver.flush();
     }
@@ -60,10 +72,40 @@ class Global
                 hero.thirst = Math.min(100, saver.data.thirst + 100 * deltaTime / hero.thirstDelay);
             }
 
+            log = saver.data.log;
+            dialogNumber = saver.data.dialogNumber;
+            dialogIndex = saver.data.dialogIndex;
+
         }
 
         hero.create();
 
+        dialog = loadDialog(dialogNumber);
+
         saver.flush();
+    }
+
+    public static function ping():Void
+    {
+        log += "(@lab): root.ping//144.235.182.100\n";
+        typeTimer = new FlxTimer(.5, answer, 1);
+    }
+
+    public static function answer(Timer:FlxTimer):Void
+    {
+        if (dialog[dialogIndex++].length > 0)
+        {
+            log += "(@hara): " + dialog[dialogIndex - 1] + "\n";
+        }
+    }
+
+    public static function loadDialog(DialogNumber:Int):Array<String>
+    {
+        var result:Array<String> = Assets.getText("assets/data/dialogs/" + Std.string(DialogNumber)).split("\n");
+        for (i in 0...result.length)
+        {
+            result[i] = result[i].split("~").join("\n");
+        }
+        return result;
     }
 }

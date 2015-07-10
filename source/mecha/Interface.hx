@@ -117,6 +117,14 @@ class Interface extends FlxSubState
                     Global.hero.use();
                 }
             }
+
+            if (monitor.opened)
+            {
+                if (monitor.button.pixelsOverlapPoint(point))
+                {
+                    Global.ping();
+                }
+            }
         }
 
 
@@ -221,7 +229,7 @@ class Monitor extends FlxGroup
 {
     public var bg:FlxSprite;
     public var button:FlxSprite;
-    public var text:FlxText;
+    public var text:CustomText;
     public var opened:Bool = false;
 
     public function new()
@@ -230,6 +238,33 @@ class Monitor extends FlxGroup
         bg = new FlxSprite(0, 90, "assets/data/gui/monitor.png");
         bg.scrollFactor.set(0, 0);
         add(bg);
+
+        text = new CustomText(13, 14 + 90, 90, Global.log);
+        text.scrollFactor.set(0, 0);
+        text.setFormat("assets/data/Micro.ttf");
+        text.color = 0xff2e8b2e;
+        add(text);
+
+        button = new FlxSprite(120, 16 + 90, "assets/data/gui/button.png");
+        button.scrollFactor.set(0, 0);
+        add(button);
+    }
+
+    override public function update():Void
+    {
+        super.update();
+
+        text.y = bg.y + 14;
+        text.text = Global.log;
+        text.regen();
+        while (text.height > 64)
+        {
+            Global.log = Global.log.substring(2, Global.log.length);
+            text.text = Global.log;
+            text.regen();
+        }
+
+        button.y = bg.y + 16;
     }
 
     public function open():Void
@@ -246,5 +281,14 @@ class Monitor extends FlxGroup
     public function onClose(Tween:FlxTween):Void
     {
         opened = false;
+    }
+}
+
+class CustomText extends FlxText
+{
+    public function regen():Void
+    {
+        regenGraphics();
+        dirty = true;
     }
 }
