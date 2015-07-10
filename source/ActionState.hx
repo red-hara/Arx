@@ -18,7 +18,7 @@ class ActionState extends FlxState
         location = new Location();
         openSubState(location);
         bgColor = 0xff000000;
-        saveTimer = new FlxTimer(30, saveMethod, 0);
+        saveTimer = new FlxTimer(15, saveMethod, 0);
     }
 
     override public function update():Void

@@ -21,7 +21,7 @@ class Door extends FlxSprite
     override public function update():Void
     {
         super.update();
-        if (FlxMath.getDistance(getMidpoint(), location.hara.getMidpoint()) < 24)
+        if (FlxMath.getDistance(getMidpoint(), location.hero.getMidpoint()) < 24)
         {
             if (fliper)
             {

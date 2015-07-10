@@ -1,11 +1,11 @@
 package;
 
-import mecha.Hara;
+import mecha.Hero;
 import flixel.util.FlxSave;
 
 class Global
 {
-    public static var hara:Hara;
+    public static var hero:Hero;
 
     public static function save():Void
     {
@@ -13,17 +13,17 @@ class Global
         saver.bind("Arx");
 
         saver.data.time = Date.now().getTime();
-        saver.data.hunger = hara.hunger;
-        saver.data.fatigue = hara.fatigue;
-        saver.data.loneliness = hara.loneliness;
-        saver.data.thirst = hara.thirst;
-        saver.data.dirtyness = hara.dirtyness;
-        saver.data.urine = hara.urine;
-        saver.data.activity = hara.activity;
-        saver.data.x = hara.x;
-        saver.data.y = hara.y;
-        saver.data.facing = hara.facing;
-        saver.data.isOnLadder = hara.isOnLadder;
+        saver.data.hunger = hero.hunger;
+        saver.data.fatigue = hero.fatigue;
+        saver.data.loneliness = hero.loneliness;
+        saver.data.thirst = hero.thirst;
+        saver.data.dirtyness = hero.dirtyness;
+        saver.data.urine = hero.urine;
+        saver.data.activity = hero.activity;
+        saver.data.x = hero.x;
+        saver.data.y = hero.y;
+        saver.data.facing = hero.facing;
+        saver.data.isOnLadder = hero.isOnLadder;
 
         saver.flush();
     }
@@ -36,33 +36,33 @@ class Global
         {
             var deltaTime:Float = (Date.now().getTime() - saver.data.time)/1000;
 
-            hara.activity = saver.data.activity;
-            hara.x = saver.data.x;
-            hara.y = saver.data.y;
-            hara.facing = saver.data.facing;
-            hara.isOnLadder = saver.data.isOnLadder;
+            hero.activity = saver.data.activity;
+            hero.x = saver.data.x;
+            hero.y = saver.data.y;
+            hero.facing = saver.data.facing;
+            hero.isOnLadder = saver.data.isOnLadder;
 
-            if (hara.activity == 1)
+            if (hero.activity == 1)
             {
-                hara.fatigue = Math.max(0, saver.data.fatigue - 100 * deltaTime / hara.fatigueDelay * 8);
+                hero.fatigue = Math.max(0, saver.data.fatigue - 100 * deltaTime / hero.fatigueDelay * 8);
             }
             else
             {
-                hara.fatigue = Math.min(100, saver.data.fatigue + 100 * deltaTime / hara.fatigueDelay);
+                hero.fatigue = Math.min(100, saver.data.fatigue + 100 * deltaTime / hero.fatigueDelay);
             }
 
-            if (hara.activity == 3)
+            if (hero.activity == 3)
             {
-                hara.thirst = Math.max(0, saver.data.thirst - 100 * deltaTime / hara.thirstDelay * 10000);
+                hero.thirst = Math.max(0, saver.data.thirst - 100 * deltaTime / hero.thirstDelay * 10000);
             }
             else
             {
-                hara.thirst = Math.min(100, saver.data.thirst + 100 * deltaTime / hara.thirstDelay);
+                hero.thirst = Math.min(100, saver.data.thirst + 100 * deltaTime / hero.thirstDelay);
             }
 
         }
 
-        hara.create();
+        hero.create();
 
         saver.flush();
     }

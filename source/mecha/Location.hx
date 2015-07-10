@@ -17,7 +17,7 @@ class Location extends FlxSubState
     public var objects:FlxGroup;
     public var light:FlxGroup;
     public var doors:FlxGroup;
-    public var hara:Hara;
+    public var hero:Hero;
 
     public var interFace:Interface;
 
@@ -79,13 +79,13 @@ class Location extends FlxSubState
         }
 
 
-        hara = new Hara(100 * 8, 65 * 8, this);
+        hero = new Hero(100 * 8, 65 * 8, this);
 
         add(new Rain());
         add(tilemap);
         add(objectsMap);
         add(objects);
-        add(hara);
+        add(hero);
         add(doors);
         add(light);
 
@@ -98,7 +98,7 @@ class Location extends FlxSubState
         Global.save();
 
         FlxG.sound.playMusic("assets/data/sounds/rain.wav");
-        add(new Noise(85 * 8, 112 * 8));
+        add(new Noise(87 * 8, 112 * 8));
     }
 
     override private function tryUpdate():Void
@@ -180,6 +180,6 @@ class Noise extends FlxSound
     override public function update():Void
     {
         super.update();
-        proximity(x, y, Global.hara, 64);
+        proximity(x, y, Global.hero, 128);
     }
 }

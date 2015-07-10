@@ -47,27 +47,27 @@ class Interface extends FlxSubState
         tab.add(bg);
 
         hungerBar = new Bar(17, 25, bg);
-        hungerBar.display(Global.hara.hunger);
+        hungerBar.display(Global.hero.hunger);
         tab.add(hungerBar);
 
         fatigueBar = new Bar(33, 25, bg);
-        fatigueBar.display(Global.hara.fatigue);
+        fatigueBar.display(Global.hero.fatigue);
         tab.add(fatigueBar);
 
         lonelinessBar = new Bar(49, 25, bg);
-        lonelinessBar.display(Global.hara.loneliness);
+        lonelinessBar.display(Global.hero.loneliness);
         tab.add(lonelinessBar);
 
         thirstBar = new Bar(65, 25, bg);
-        thirstBar.display(Global.hara.thirst);
+        thirstBar.display(Global.hero.thirst);
         tab.add(thirstBar);
 
         dirtynessBar = new Bar(81, 25, bg);
-        dirtynessBar.display(Global.hara.dirtyness);
+        dirtynessBar.display(Global.hero.dirtyness);
         tab.add(dirtynessBar);
 
         urineBar = new Bar(97, 25, bg);
-        urineBar.display(Global.hara.urine);
+        urineBar.display(Global.hero.urine);
         tab.add(urineBar);
 
         add(tab);
@@ -116,14 +116,14 @@ class Interface extends FlxSubState
                 if (useButton.pixelsOverlapPoint(point))
                 {
                     used = true;
-                    Global.hara.use();
+                    Global.hero.use();
                 }
             }
         }
 
 
 
-        if (Global.hara.canUse)
+        if (Global.hero.canUse)
         {
             if (fliper)
             {
@@ -137,12 +137,12 @@ class Interface extends FlxSubState
             FlxTween.linearMotion(useButton, useButton.x, useButton.y, 144+16, -16, .25, true, {complete: fliperUse, type: FlxTween.ONESHOT});
         }
 
-        hungerBar.display(Global.hara.hunger);
-        fatigueBar.display(Global.hara.fatigue);
-        lonelinessBar.display(Global.hara.loneliness);
-        thirstBar.display(Global.hara.thirst);
-        dirtynessBar.display(Global.hara.dirtyness);
-        urineBar.display(Global.hara.urine);
+        hungerBar.display(Global.hero.hunger);
+        fatigueBar.display(Global.hero.fatigue);
+        lonelinessBar.display(Global.hero.loneliness);
+        thirstBar.display(Global.hero.thirst);
+        dirtynessBar.display(Global.hero.dirtyness);
+        urineBar.display(Global.hero.urine);
     }
 
     public function fliperUse(Tween:FlxTween):Void
