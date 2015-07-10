@@ -82,6 +82,35 @@ class Location extends FlxSubState
             objectsMap.setTile(Std.int(point.x / 8), Std.int(point.y / 8), 0);
         }
 
+        points = objectsMap.getTileCoords(20, false);
+        for (point in points)
+        {
+            sprite = new Mushroom(point.x, point.y);
+            objects.add(sprite);
+            objectsMap.setTile(Std.int(point.x / 8), Std.int(point.y / 8), 0);
+        }
+
+        points = objectsMap.getTileCoords(24, false);
+        for (point in points)
+        {
+            sprite = new Toilet(point.x, point.y);
+            objects.add(sprite);
+        }
+
+        points = objectsMap.getTileCoords(33, false);
+        for (point in points)
+        {
+            sprite = new Shower(point.x, point.y);
+            objects.add(sprite);
+        }
+
+        points = objectsMap.getTileCoords(52, false);
+        for (point in points)
+        {
+            sprite = new Portal(point.x, point.y);
+            objects.add(sprite);
+        }
+
         objects.add(new Computer(88 * 8, 89 * 8));
 
 

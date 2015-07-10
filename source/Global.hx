@@ -12,7 +12,7 @@ class Global
     public static var log:String = "";
     public static var dialogNumber:Int = -1;
     public static var dialogIndex:Int = 0;
-    public static var dialogAmount = 0;
+    public static var dialogAmount = 2;
     public static var dialog:Array<String>;
     public static var typeTimer:FlxTimer;
 
@@ -36,6 +36,7 @@ class Global
         saver.data.log = log;
         saver.data.dialogNumber = dialogNumber;
         saver.data.dialogIndex = dialogIndex;
+        saver.data.death = hero.death;
 
         saver.flush();
     }
@@ -54,6 +55,8 @@ class Global
             hero.facing = saver.data.facing;
             hero.isOnLadder = saver.data.isOnLadder;
 
+            hero.hunger = Math.min(100, saver.data.hunger + 100 * deltaTime / hero.hungerDelay);
+
             if (hero.activity == 1)
             {
                 hero.fatigue = Math.max(0, saver.data.fatigue - 100 * deltaTime / hero.fatigueDelay * 8);
@@ -63,6 +66,8 @@ class Global
                 hero.fatigue = Math.min(100, saver.data.fatigue + 100 * deltaTime / hero.fatigueDelay);
             }
 
+            hero.loneliness = Math.min(100, saver.data.loneliness + 100 * deltaTime / hero.lonelinessDelay);
+
             if (hero.activity == 3)
             {
                 hero.thirst = Math.max(0, saver.data.thirst - 100 * deltaTime / hero.thirstDelay * 10000);
@@ -70,6 +75,26 @@ class Global
             else
             {
                 hero.thirst = Math.min(100, saver.data.thirst + 100 * deltaTime / hero.thirstDelay);
+            }
+
+            if (hero.activity == 7)
+            {
+                hero.dirtyness = Math.max(0, saver.data.dirtyness - 100 * deltaTime / hero.dirtynessDelay * 2000);
+            }
+            else
+            {
+                hero.dirtyness = Math.min(100, saver.data.dirtyness + 100 * deltaTime / hero.dirtynessDelay);
+            }
+
+            hero.urine = Math.min(100, saver.data.urine + 100 * deltaTime / hero.urineDelay);
+
+            if (saver.data.death != 0)
+            {
+                hero.death = Math.max(.5, saver.data.death - 100 * deltaTime / hero.deathDelay);
+            }
+            else
+            {
+                hero.death = 0;
             }
 
             log = saver.data.log;
@@ -87,15 +112,25 @@ class Global
 
     public static function ping():Void
     {
-        log += "(@lab): root.ping//144.235.182.100\n";
-        typeTimer = new FlxTimer(.5, answer, 1);
+        log += "(#lab): root.ping//144.235.182.100\n";
+        typeTimer = new FlxTimer(.25, answer, 1);
+        hero.loneliness = Math.max(0, hero.loneliness - 2.5);
     }
 
     public static function answer(Timer:FlxTimer):Void
     {
-        if (dialog[dialogIndex++].length > 0)
+        if (dialogIndex < dialog.length)
         {
-            log += "(@hara): " + dialog[dialogIndex - 1] + "\n";
+            if (dialog[dialogIndex++].length > 0)
+            {
+                log += "(#hara): " + dialog[dialogIndex - 1] + "\n";
+            }
+        }
+        else
+        {
+            dialogIndex = 0;
+            dialogNumber = Std.int(dialogAmount * Math.random());
+            dialog = loadDialog(dialogNumber);
         }
     }
 
