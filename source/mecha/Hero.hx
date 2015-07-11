@@ -105,7 +105,7 @@ class Hero extends FlxSprite
             thirst = Math.min(100, 100 * FlxG.elapsed / thirstDelay + thirst);
             dirtyness = Math.min(100, 100 * FlxG.elapsed / dirtynessDelay + dirtyness);
             urine = Math.min(100, 100 * FlxG.elapsed / urineDelay + urine);
-            if (hunger + fatigue + loneliness + dirtyness + urine > 450)
+            if (hunger + fatigue + loneliness + dirtyness + urine >= 350)
             {
                 death = 100;
             }

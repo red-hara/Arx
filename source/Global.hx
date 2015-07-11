@@ -12,7 +12,7 @@ class Global
     public static var log:String = "";
     public static var dialogNumber:Int = -1;
     public static var dialogIndex:Int = 0;
-    public static var dialogAmount = 18;
+    public static var dialogAmount = 19;
     public static var dialog:Array<String>;
     public static var typeTimer:FlxTimer;
 
