@@ -12,7 +12,7 @@ class Global
     public static var log:String = "";
     public static var dialogNumber:Int = -1;
     public static var dialogIndex:Int = 0;
-    public static var dialogAmount = 2;
+    public static var dialogAmount = 18;
     public static var dialog:Array<String>;
     public static var typeTimer:FlxTimer;
 
@@ -112,9 +112,9 @@ class Global
 
     public static function ping():Void
     {
-        log += "(#lab): root.ping//144.235.182.100\n";
+        log += "#lab: ping//144.235.182.100\n";
         typeTimer = new FlxTimer(.25, answer, 1);
-        hero.loneliness = Math.max(0, hero.loneliness - 2.5);
+        hero.loneliness = Math.max(0, hero.loneliness - 10);
     }
 
     public static function answer(Timer:FlxTimer):Void
@@ -123,7 +123,7 @@ class Global
         {
             if (dialog[dialogIndex++].length > 0)
             {
-                log += "(#hara): " + dialog[dialogIndex - 1] + "\n";
+                log += "#hara: " + dialog[dialogIndex - 1] + "\n";
             }
         }
         else

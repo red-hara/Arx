@@ -131,6 +131,10 @@ class Location extends FlxSubState
 
         FlxG.sound.playMusic("assets/data/sounds/rain.wav");
         add(new Noise(87 * 8, 112 * 8));
+        add(new Noise(59 * 8, 40 * 8));
+        add(new Noise(61 * 8, 62 * 8));
+        add(new Noise(99 * 8, 61 * 8));
+        add(new Noise(89 * 8, 88 * 8));
     }
 
     override private function tryUpdate():Void

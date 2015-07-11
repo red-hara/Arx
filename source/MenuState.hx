@@ -15,6 +15,7 @@ class MenuState extends FlxState
         text.alignment = "center";
         text.size = 16;
         text.color = 0xff529ba2;
+        text.setBorderStyle(2, 0xff122123);
         add(text);
         bgColor = 0xff000000;
         #if android

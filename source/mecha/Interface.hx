@@ -257,7 +257,7 @@ class Monitor extends FlxGroup
         text.y = bg.y + 14;
         text.text = Global.log;
         text.regen();
-        while (text.height > 64)
+        while (text.height > 80)
         {
             Global.log = Global.log.substring(2, Global.log.length);
             text.text = Global.log;

@@ -23,11 +23,11 @@ class Hero extends FlxSprite
 
     public var death:Float = 0;
 
-    public var hungerDelay:Float = 60 * 60 * 12;
+    public var hungerDelay:Float = 60 * 60 * 20;
     public var fatigueDelay:Float = 60 * 60 * 14;
     public var lonelinessDelay:Float = 60 * 60 * 10;
-    public var thirstDelay:Float = 60 * 60 * 12;
-    public var dirtynessDelay:Float = 60 * 60 * 16;
+    public var thirstDelay:Float = 60 * 60 * 8;
+    public var dirtynessDelay:Float = 60 * 60 * 9;
     public var urineDelay:Float = 60 * 60 * 18;
     public var deathDelay:Float = 60 * 60;
 
