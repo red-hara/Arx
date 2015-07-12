@@ -10,7 +10,7 @@ class MenuState extends FlxState
     override public function create():Void
     {
         super.create();
-        var text:FlxText = new FlxText(0, FlxG.height / 3, FlxG.width, "Arx 0.9\nTouch to start.");
+        var text:FlxText = new FlxText(0, FlxG.height / 3, FlxG.width, "Arx v1.0\nTouch to start.");
         text.setFormat("assets/data/Micro.ttf");
         text.alignment = "center";
         text.size = 16;
